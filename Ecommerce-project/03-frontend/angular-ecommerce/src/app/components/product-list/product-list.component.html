@@ -1,26 +1,3 @@
-<!-- <table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Units in Stock</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr *ngFor="let tempProduct of products">
-            <td>
-                <img src="{{tempProduct.imageUrl}}" height="50"/>
-            </td>
-                <td>{{tempProduct.name}}</td>
-                <td>{{tempProduct.unitPrice | currency:'USD'}}</td>
-                <td>{{tempProduct.unitsInStock}}</td>
-        </tr>
-    </tbody>
-</table>
- -->
-
  <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
@@ -29,8 +6,15 @@
                 <div *ngFor="let tempProduct of products" class="col-md-3">
                 
                     <div class="product-box">
+
+                        <a routerLink="/products/{{ tempProduct.id}}">
                         <img src=" {{ tempProduct.imageUrl }}" class="img-responsive">
-                        <h1>{{tempProduct.name}}</h1>
+                        </a>
+                        <a routerLink="/products/{{ tempProduct.id}}">
+                            <h1>{{tempProduct.name}}</h1>
+                         </a>
+                        
+
                         <div class="price">
                             {{tempProduct.unitPrice | currency:'USD'}}
                         </div>
