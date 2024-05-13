@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
 
 @Component({
   selector: 'app-checkout',
@@ -11,8 +12,12 @@ export class CheckoutComponent {
   checkoutFormGroup!: FormGroup;
   totalPrice: number = 0;
   totalQuantity: number = 0;
+
+  creditCardYears: number[] = [];
+  creditCardMonths: number[] = [];
   
-  constructor(private formBuilder: FormBuilder){}
+  constructor(private formBuilder: FormBuilder,
+              private luv2ShopService: Luv2ShopFormService){}
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -44,7 +49,26 @@ export class CheckoutComponent {
         securityCode: ['']
       })
 
-    })
+    });
+
+
+    const startMonth : number = new Date().getMonth() + 1;
+    console.log("start month: " + startMonth);
+
+    this.luv2ShopService.getCreditCardMonths(startMonth).subscribe(
+      data => {
+        console.log("Retrieved credit card months: " + JSON.stringify(data));
+        this.creditCardMonths = data;
+      }
+    );
+
+    this.luv2ShopService.getCreditCardYears().subscribe(
+      data => {
+        console.log("Retrieved credit card years: " + JSON.stringify(data));
+        this.creditCardYears = data;
+      }
+    )
+
   }
 
   onSubmit(){
@@ -62,6 +86,28 @@ export class CheckoutComponent {
     }else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
     }
+  }
+
+  handleMonthAndYear() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(creditCardFormGroup?.value.expirationYear);
+
+    let startMonth: number;
+
+    if(currentYear === selectedYear){
+      startMonth = new Date().getMonth() + 1;
+    }else {
+      startMonth = 1;
+    }
+
+    this.luv2ShopService.getCreditCardMonths(startMonth).subscribe(
+      data => {
+        console.log("Retrieved credit cart months: " + JSON.stringify(data));
+        this.creditCardMonths = data;
+      }
+    )
   }
 
 }
