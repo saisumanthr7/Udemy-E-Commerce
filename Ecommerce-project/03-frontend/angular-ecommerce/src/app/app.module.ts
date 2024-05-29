@@ -24,7 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProductDetailsComponent,
     CartStatusComponent,
     CartDetailsComponent,
-    CheckoutComponent
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
